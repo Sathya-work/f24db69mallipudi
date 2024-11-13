@@ -6,8 +6,6 @@ router.get('/', invention_controller.invention_list);
 
 router.post('/create', invention_controller.invention_create_post);
 
-router.get('/', invention_controller.invention_view_all_Page);
-
 router.get('/:id', invention_controller.invention_detail);
 
 router.get('/:id/update', invention_controller.invention_update_get);
