@@ -23,10 +23,10 @@ db.once("open", function(){
 // Route imports
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
-const inventionsRouter = require('./routes/inventions');
 const gridRouter = require('./routes/grid');
 const pickRouter = require('./routes/pick');
 const resourceRouter = require('./routes/resource');
+const inventionsRouter = require('./routes/inventions');
 
 // Schema definition
 const inventionSchema = new mongoose.Schema({
@@ -35,7 +35,7 @@ const inventionSchema = new mongoose.Schema({
   inventor: String
 });
 
-const Invention = mongoose.model('Invention', inventionSchema);
+const Invention = mongoose.models.Invention || mongoose.model('Invention', inventionSchema);
 
 // Database seeding function
 async function recreateDB() {

@@ -1,14 +1,14 @@
 const Invention = require('../models/inventions');
 
 exports.invention_list = async function(req, res) {
-    try {
+  try {
       const inventions = await Invention.find();
-      res.send(inventions);
-    } catch (err) {
-      res.status(500).send(`{"error": ${err}}`);
-    }
-  };
-
+      res.render('inventions', { results: inventions });
+  } catch (err) {
+      res.status(500).send(`Error: ${err}`);
+  }
+};
+  
 exports.invention_detail = function(req, res) {
   res.send('NOT IMPLEMENTED: Invention detail: ' + req.params.id);
 };
