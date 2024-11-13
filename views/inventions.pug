@@ -6,12 +6,15 @@ block content
   .container-fluid
     .row
       each item in results
-        div.col-sm-2(onclick=`buy(${item._id})`) 
+        div.col-sm-3
           h3 #{item.name}
           p Year: #{item.year}
           p Inventor: #{item.inventor}
+          a(href=`/inventions/${item._id}`) Inspect
+          a(href=`/inventions/${item._id}/update`) Update
+          a(href=`/inventions/${item._id}/delete`) Delete
   
-  a(href='/') Back to Home
+  a(href='/inventions/create') Add New Invention
 
   script.
     function buy(index) {
