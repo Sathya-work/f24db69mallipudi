@@ -3,20 +3,24 @@ extends layout
 block content
   h1 Search Results - Inventions
 
+  - 
+    const results = [
+      {name: 'Telephone', year: 1876, inventor: 'Alexander Graham Bell'},
+      {name: 'Light Bulb', year: 1879, inventor: 'Thomas Edison'},
+      {name: 'Airplane', year: 1903, inventor: 'Wright Brothers'}
+    ]
+
   .container-fluid
     .row
-      each item in results
-        div.col-sm-3
+      each item, index in results
+        div.col-sm-2(onclick=buy(${index}))
           h3 #{item.name}
           p Year: #{item.year}
           p Inventor: #{item.inventor}
-          a(href=`/inventions/${item._id}`) Inspect
-          a(href=`/inventions/${item._id}/update`) Update
-          a(href=`/inventions/${item._id}/delete`) Delete
   
-  a(href='/inventions/create') Add New Invention
+  a(href='/') Back to Home
 
   script.
     function buy(index) {
-      alert(`You purchased item ${index}`);
+      alert(You purchased item ${index});
     }
