@@ -9,10 +9,6 @@ exports.invention_list = async function(req, res) {
       res.status(500).send(`Error: ${err}`);
   }
 };
-  
-exports.invention_detail = function(req, res) {
-  res.send('NOT IMPLEMENTED: Invention detail: ' + req.params.id);
-};
 
 //create one
 exports.invention_create_post = async function(req, res) {
@@ -35,14 +31,15 @@ exports.invention_delete = function(req, res) {
 };
 
 //put one update
+// Invention controller (controllers/inventions.js)
 exports.invention_update_put = async function(req, res) {
   console.log(`update on id ${req.params.id} with body ${JSON.stringify(req.body)}`);
   try {
       let toUpdate = await Invention.findById(req.params.id);
       // Update properties
-      if (req.body.invention_name) toUpdate.invention_name = req.body.invention_name;
-      if (req.body.invention_year) toUpdate.invention_year = req.body.invention_year;
-      if (req.body.invention_cost) toUpdate.invention_cost = req.body.invention_cost;
+      if (req.body.name) toUpdate.name = req.body.name;
+      if (req.body.year) toUpdate.year = req.body.year;
+      if (req.body.inventor) toUpdate.inventor = req.body.inventor;
       let result = await toUpdate.save();
       console.log("Success " + result);
       res.send(result);
@@ -89,14 +86,6 @@ exports.invention_delete_get = async function(req, res) {
   } catch (err) {
       res.status(500).send(`Error: ${err}`);
   }
-};
-
-exports.invention_update_post = async function(req, res) {
-  res.send('NOT IMPLEMENTED: Invention update POST ' + req.params.id);
-};
-
-exports.invention_delete_post = async function(req, res) {
-  res.send('NOT IMPLEMENTED: Invention delete POST ' + req.params.id);
 };
 
 //delete one
