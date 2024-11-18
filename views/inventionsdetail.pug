@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    h1= title
+    - let inventionid = toShow._id
+    - let inventionname = toShow.name
+    - let inventionyear = toShow.year
+    - let inventiondescription = toShow.description
+
+    div
+        div.row
+            div(class='inventionAttr mr-3') Invention ID is:
+            div #{inventionid}
+        div.row
+            div(class='inventionAttr mr-3') Invention Name is:
+            div #{inventionname}
+        div.row
+            div(class='inventionAttr mr-3') Invention Year is:
+            div #{inventionyear}
+        div.row
+            div(class='inventionAttr mr-3') Invention Description is:
+            div #{inventiondescription}

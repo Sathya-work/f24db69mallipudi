@@ -61,33 +61,6 @@ exports.invention_detail = async function(req, res) {
   }
 };
 
-
-exports.invention_update_get = async function(req, res) {
-  try {
-      const invention = await Invention.findById(req.params.id);
-      if (!invention) {
-          res.status(404).send('Invention not found');
-          return;
-      }
-      res.render('invention_update', { invention });
-  } catch (err) {
-      res.status(500).send(`Error: ${err}`);
-  }
-};
-
-exports.invention_delete_get = async function(req, res) {
-  try {
-      const invention = await Invention.findById(req.params.id);
-      if (!invention) {
-          res.status(404).send('Invention not found');
-          return;
-      }
-      res.render('invention_delete', { invention });
-  } catch (err) {
-      res.status(500).send(`Error: ${err}`);
-  }
-};
-
 //delete one
 exports.invention_delete = async function(req, res) {
     console.log("delete " + req.params.id);
@@ -98,5 +71,18 @@ exports.invention_delete = async function(req, res) {
     } catch (err) {
         res.status(500);
         res.send(`{"error": Error deleting ${err}}`);
+    }
+};
+
+//single view
+exports.invention_view_one_Page = async function(req, res) {
+    console.log("single view for id " + req.query.id);
+    try {
+        result = await Invention.findById(req.query.id);
+        res.render('inventionsdetail', 
+            { title: 'Invention Detail', toShow: result });
+    } catch (err) {
+        res.status(500);
+        res.send(`{'error': '${err}'}`);
     }
 };
