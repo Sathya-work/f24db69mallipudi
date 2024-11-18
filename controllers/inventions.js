@@ -90,14 +90,13 @@ exports.invention_delete_get = async function(req, res) {
 
 //delete one
 exports.invention_delete = async function(req, res) {
-  try {
-      const result = await Invention.findByIdAndDelete(req.params.id);
-      if (!result) {
-          res.status(404).send('Invention not found');
-          return;
-      }
-      res.send(`Invention with id ${req.params.id} was deleted.`);
-  } catch (err) {
-      res.status(500).send(`Error: ${err}`);
-  }
+    console.log("delete " + req.params.id);
+    try {
+        const result = await Invention.findByIdAndDelete(req.params.id);
+        console.log("Removed " + result);
+        res.send(result);
+    } catch (err) {
+        res.status(500);
+        res.send(`{"error": Error deleting ${err}}`);
+    }
 };
