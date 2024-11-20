@@ -86,3 +86,25 @@ exports.invention_view_one_Page = async function(req, res) {
         res.send(`{'error': '${err}'}`);
     }
 };
+
+exports.invention_create_Page = function (req, res) {
+    console.log("create view");
+    try {
+        res.render('inventionscreate', { title: 'Invention Create' });
+    } catch (err) {
+        res.status(500);
+        res.send(`{'error': '${err}'}`);
+    }
+}
+
+exports.invention_update_Page = async function(req, res) {
+    console.log("update view for item "+req.query.id)
+    try{
+    let result = await Invention.findById(req.query.id)
+    res.render('inventionsupdate', { title: 'Inventions Update', toShow: result });
+    }
+    catch(err){
+    res.status(500)
+    res.send(`{'error': '${err}'}`);
+    }
+    };

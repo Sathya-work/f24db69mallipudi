@@ -1,0 +1,29 @@
+extends layout
+
+block content
+  h1= title
+  form(id='InventionForm', action="/resource/inventions", method="POST")
+    div.form-group
+      label.inventionAttr(for='name') Invention Name
+      input#invention_name(type='text', name='name')
+    div.form-group
+      label.inventionAttr(for='year') Year
+      input#year(type='number', name='year')
+    div.form-group
+      label.inventionAttr(for='inventor') Inventor
+      input#inventor(type='text', name='inventor')
+    input(type="submit")
+  script.
+    document.forms['InventionForm'].addEventListener('submit', (event) => {
+      event.preventDefault();
+      fetch(event.target.action, {
+        method: 'POST',
+        body: new URLSearchParams(new FormData(event.target))
+      }).then((resp) => {
+        return resp.json();
+      }).then((body) => {
+        alert("Save succeeded");
+      }).catch((error) => {
+        alert("Save failed " + error);
+      });
+    });
