@@ -1,11 +1,11 @@
 extends layout
 
 block content
-  h1 Invention Create
+  h1= title
   form(id='InventionForm', action="/resource/inventions", method="POST")
     div.form-group
-      label.inventionAttr(for='name') Invention Name
-      input#invention_name(type='text', name='name')
+      label.inventionAttr(for='invention_name') Invention Name
+      input#invention_name(type='text', name='invention_name')
     div.form-group
       label.inventionAttr(for='year') Year
       input#year(type='number', name='year')
