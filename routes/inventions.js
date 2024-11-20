@@ -22,4 +22,6 @@ router.get('/create', invention_controller.invention_create_Page);
 
 router.get('/update', invention_controller.invention_update_Page);
 
+router.get('/delete', invention_controller.invention_delete_Page);
+
 module.exports = router;

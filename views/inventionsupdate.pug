@@ -1,28 +1,39 @@
 extends layout
 
 block content
-    h1= title
+    h1 Invention Update
 
-    - let inventionid = toShow._id
-    - let name = toShow.name
-    - let inventionsinventor = toShow.inventor
-    - let inventionsyear = toShow.year
+    if (toShow == null)
+        h2 No instance found to update
+    else
+        - let inventionid = toShow._id
+        - let name = toShow.name
+        - let inventionsinventor = toShow.inventor
+        - let inventionsyear = toShow.year
 
-    div.row(class='mb-2')
-        div.mr-1 ID is
-        div #{inventionid}
-    - let actionid = "/resource/inventions/" + inventionid
-    form(id='inventionsForm', action= actionid, method="PUT")
-        div.form-group
-            label.inventionAttr(for='name') inventions type
-            input#name(type='text', name='name', value= name )
-        div.form-group
-            label.inventionAttr(for='year') inventions year
-            input#year(type='text', name='year', value= inventionsyear )
-        div.form-group
-            label.inventionAttr(for='inventor') inventions inventor
-            input#inventor(type='text', name='inventor', value= inventionsinventor )
-        input(type="submit")
+        div.row.mb-3
+            div.mr-1.font-weight-bold ID is:
+            div #{inventionid}
+
+        - let actionid = "/resource/inventions/" + inventionid
+        form(id='inventionsForm', action=actionid, method="PUT")
+            div.form-group
+                label.inventionAttr(for='name') Invention Name:
+                input#name(type='text', name='name', value=name, class='form-control')
+            div.form-group
+                label.inventionAttr(for='year') Invention Year:
+                input#year(type='text', name='year', value=inventionsyear, class='form-control')
+            div.form-group
+                label.inventionAttr(for='inventor') Invention Inventor:
+                input#inventor(type='text', name='inventor', value=inventionsinventor, class='form-control')
+            input(type="submit", class="btn btn-primary mt-2")
+
+        button(class="btn btn-secondary mt-2 ml-2" onclick="goBack()") Cancel
+
+    script.
+        function goBack() {
+            window.location.href = "/inventions";
+        }
 
     script.
         document.forms['inventionsForm'].addEventListener('submit', (event) => {
@@ -31,15 +42,12 @@ block content
                 method: 'PUT',
                 body: new URLSearchParams(new FormData(event.target)) // event.target is the form
             })
-            .then((resp) => {
-                return resp.json(); // or resp.text() or whatever the server sends
-            })
+            .then((resp) => resp.json())
             .then((body) => {
                 alert("Update succeeded");
-                // TODO handle body
+                window.location.href = "/inventions";
             })
             .catch((error) => {
-                // TODO handle error
                 alert("Update failed " + error);
             });
         });
