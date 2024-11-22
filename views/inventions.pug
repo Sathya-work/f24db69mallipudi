@@ -2,18 +2,16 @@ extends layout
 
 block content
   h1 Search Results - Inventions
+  - let items = results;
 
-  .container-fluid
-    .row
-      each item in results
-        div.col-sm-2(onclick=`buy(${item._id})`) 
-          h3 #{item.name}
-          p Year: #{item.year}
-          p Inventor: #{item.inventor}
-  
-  a(href='/') Back to Home
+  div(class="container-fluid")
+    div(class="row m-1")
+      each item in items
+        - let destination = `dispatch(\"/inventions/update?id=${item._id}\")`
+        div(class="row-sm-2", class="m-1") Inventor of #{item.name}(#{item.year}) is #{item.inventor}
+          button.btn( class="btn-primary m-1", onclick= destination) Update
 
   script.
-    function buy(index) {
-      alert(You purchased item ${index});
+    function dispatch(path){
+      window.location.href=path
     }
