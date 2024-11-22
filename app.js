@@ -4,6 +4,7 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const passport = require('passport');
 require('dotenv').config();
 
 const connectionString = process.env.MONGO_CON;
@@ -16,7 +17,7 @@ var db = mongoose.connection;
 
 //Bind connection to error event
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-db.once("open", function(){
+db.once("open", function () {
   console.log("Connection to DB succeeded")
 });
 
@@ -27,6 +28,7 @@ const gridRouter = require('./routes/grid');
 const pickRouter = require('./routes/pick');
 const resourceRouter = require('./routes/resource');
 const inventionsRouter = require('./routes/inventions');
+const LocalStrategy = require('passport-local').Strategy;
 
 // Schema definition
 const inventionSchema = new mongoose.Schema({
@@ -40,7 +42,7 @@ const Invention = mongoose.models.Invention || mongoose.model('Invention', inven
 // Database seeding function
 async function recreateDB() {
   await Invention.deleteMany();
-  
+
   let instance1 = new Invention({ name: 'Telephone', year: 1876, inventor: 'Alexander Graham Bell' });
   let instance2 = new Invention({ name: 'Light Bulb', year: 1879, inventor: 'Thomas Edison' });
   let instance3 = new Invention({ name: 'Airplane', year: 1903, inventor: 'Wright Brothers' });
@@ -69,6 +71,25 @@ if (reseed) {
   recreateDB();
 }
 
+passport.use(new LocalStrategy(
+  function (username, password, done) {
+    Account.findOne({ username: username })
+      .then(function (user) {
+        if (err) { return done(err); }
+        if (!user) {
+          return done(null, false, { message: 'Incorrect username.' });
+        }
+        if (!user.validPassword(password)) {
+          return done(null, false, { message: 'Incorrect password.' });
+        }
+        return done(null, user);
+      })
+      .catch(function (err) {
+        return done(err)
+      })
+  })
+)
+
 // Express app setup
 const app = express();
 
@@ -91,16 +112,29 @@ app.use('/grid', gridRouter);
 app.use('/selector', pickRouter);
 app.use('/resource', resourceRouter);
 
+app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+  }));
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Error handling
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
   res.status(err.status || 500);
   res.render('error');
 });
+
+var Account =require('./models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
 
 module.exports = app;
