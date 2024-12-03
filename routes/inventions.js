@@ -24,13 +24,13 @@ router.delete('/inventions:id', invention_controller.invention_delete);
 
 router.get('/inventions:id', invention_controller.invention_detail);
 
-router.get('/detail', invention_controller.invention_view_one_Page);
+router.get('/detail', secured, invention_controller.invention_view_one_Page);
 
 router.get('/create', invention_controller.invention_create_Page);
 
 router.get('/update', secured, invention_controller.invention_update_Page);
 
-router.get('/delete', invention_controller.invention_delete_Page);
+router.get('/delete', secured, invention_controller.invention_delete_Page);
 
 router.post('/login', passport.authenticate('local'), function(req, res) {
     res.redirect('/');
