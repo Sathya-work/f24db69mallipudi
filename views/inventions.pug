@@ -2,14 +2,19 @@ extends layout
 
 block content
   h1 Search Results - Inventions
+  button.btn(class="btn-primary m-1", onclick="window.location.href='/inventions/create'") Create
   - let items = results;
 
   div(class="container-fluid")
     div(class="row m-1")
       each item in items
-        - let destination = `dispatch(\"/inventions/update?id=${item._id}\")`
+        - let detailDestination = `dispatch(\"/inventions/detail?id=${item._id}\")`
+        - let deleteDestination = `dispatch(\"/inventions/delete?id=${item._id}\")`
         div(class="row-sm-2", class="m-1") Inventor of #{item.name}(#{item.year}) is #{item.inventor}
-          button.btn( class="btn-primary m-1", onclick= destination) Update
+          button.btn(class="btn-primary m-1", onclick=detailDestination) Detail
+          button.btn(class="btn-danger m-1", onclick=deleteDestination) Delete
+          - let updateDestination = `dispatch(\"/inventions/update?id=${item._id}\")`
+          button.btn( class="btn-primary m-1", onclick= updateDestination) Update
 
   script.
     function dispatch(path){ 
